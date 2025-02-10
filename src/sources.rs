@@ -292,18 +292,6 @@ impl IOServiceIterator {
   }
 }
 
-// Convert std::error::Error to PyErr
-// impl From<Box<dyn std::error::Error>> for pyo3::PyErr {
-//  fn from(err: Box<dyn std::error::Error>) -> pyo3::PyErr {
-//      PyRuntimeError::new_err(err.to_string())
-//  }
-//}
-
-//impl From<String> for PyErr {
-//  fn from(err: String) -> PyErr {
-//      PyRuntimeError::new_err(err)
-//  }
-//}
 
 impl Drop for IOServiceIterator {
   fn drop(&mut self) {
@@ -312,9 +300,6 @@ impl Drop for IOServiceIterator {
     }
   }
 }
-
-
-
 
 
 impl Iterator for IOServiceIterator {
@@ -476,19 +461,29 @@ pub fn libc_swap() -> WithError<(u64, u64)> {
 }
 
 // MARK: SockInfo
-
+#[pyclass]
 #[derive(Debug, Default, Clone)]
 pub struct SocInfo {
+  #[pyo3(get)]
   pub mac_model: String,
+  #[pyo3(get)]
   pub chip_name: String,
+  #[pyo3(get)]
   pub memory_gb: u8,
+  #[pyo3(get)]
   pub ecpu_cores: u8,
+  #[pyo3(get)]
   pub pcpu_cores: u8,
+  #[pyo3(get)]
   pub ecpu_freqs: Vec<u32>,
+  #[pyo3(get)]
   pub pcpu_freqs: Vec<u32>,
+  #[pyo3(get)]
   pub gpu_cores: u8,
+  #[pyo3(get)]
   pub gpu_freqs: Vec<u32>,
 }
+
 
 impl SocInfo {
   pub fn new() -> WithError<Self> {
@@ -657,7 +652,7 @@ unsafe fn cfio_get_subs(chan: CFMutableDictionaryRef) -> WithError<IOReportSubsc
   Ok(rs)
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct IOReport {
   subs: IOReportSubscriptionRef,
   chan: CFMutableDictionaryRef,
