@@ -1,11 +1,12 @@
 #![allow(non_upper_case_globals)]
-#![allow(dead_code)]
-#![allow(unused_imports)]
-#![allow(unused_variables)]
+//#![allow(dead_code)]
+//#![allow(unused_imports)]
+//#![allow(unused_variables)]
 #![allow(unused_assignments)]
 
 use pyo3::prelude::*;
-use pyo3::wrap_pyfunction;
+// atm unused
+//use pyo3::wrap_pyfunction;
 use pyo3::exceptions::PyRuntimeError;
 
 use core_foundation::dictionary::CFDictionaryRef;
@@ -222,11 +223,14 @@ fn init_smc() -> WithError<(SMC, Vec<String>, Vec<String>)> {
 #[pyclass(unsendable)]
 #[derive(Debug)]
 pub struct Sampler {
+  #[pyo3(get)]
   soc: SocInfo,
   ior: IOReport,
   hid: IOHIDSensors,
   smc: SMC,
+  #[pyo3(get)]
   smc_cpu_keys: Vec<String>,
+  #[pyo3(get)]
   smc_gpu_keys: Vec<String>,
 }
 
